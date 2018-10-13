@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./Readability.js"></script>
+<script src="./JSDOMParser.js"></script>
+<script src="./vue.min.js"></script>
+<script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="url">
+        <button @click="parsing">click me</button>
+
+        <div>
+            <h1>{{title}}</h1>
+            <div class="container" v-html="content">
+                
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: { url: 'http://news.chosun.com/site/data/html_dir/2018/10/13/2018101300225.html',
+                    title: '',
+                    content: '' },
+            methods: {
+                parsing() {
+                    console.log(this.url)
+                    let $this = this;
+                    axios.get(this.url)
+                        .then(function (response) {
+                            let htm = response.data;
+                            var article = document.cloneNode(true);
+                            article.documentElement.innerHTML = htm;
+                            let doc = new Readability(article).parse();
+                            console.log(doc);
+                            $this.title = doc.title;
+                            $this.content = doc.content;
+                            // document.documentElement.innerHTML = '<h1>' + doc.title + '</h1>' + doc.content
+                        })
+                }
+            }
+
+        })
+    // let url = "http://news.chosun.com/site/data/html_dir/2018/10/13/2018101300225.html"
+
+    </script>
+</body>
+
+</html>
