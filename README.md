@@ -1,2 +1,2 @@
 # depromeet_mini-reader-view
-user readabililty.js by mozilla
+use [readabililty.js](https://github.com/mozilla/readability) by mozilla
